@@ -11,6 +11,7 @@ Static single-page HTML app ("DART Pilot Student AI Readiness and Integration Hu
   - `GET /api/assessments` — list the signed-in student's assessments (newest first)
   - `GET /api/health` — health check
 - **Frontend auth:** `index.html` shows a sign-in/sign-up overlay when no valid token is in localStorage (`dart_token`); the "Sign out" button in the topbar clears it. `showAuth()` resets the overlay to the sign-in box and clears the fields.
+- **Personal dashboard:** the home page metrics are rendered by `renderHome()` from the signed-in student's assessments (latest stage, score trend, check count, recommended next section); `loadSaved()` fetches once and refreshes both home and the AI Ready page. `[data-go]` navigation is event-delegated on the root, so dynamically rendered cards navigate too.
 - **Proxy:** nginx proxies `/api/` to the FastAPI service (single-origin, no CORS issues).
 - **Database:** SQLite at `backend/data/readiness.db` (stored in a Docker volume `api_data`).
 
