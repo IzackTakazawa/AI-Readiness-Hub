@@ -6,9 +6,11 @@ Static single-page HTML app ("DART Pilot Student AI Readiness and Integration Hu
 ## Architecture
 - **Frontend:** `index.html` — static SPA served by nginx. No build step.
 - **Backend:** `backend/main.py` — FastAPI app with SQLite. Endpoints:
-  - `POST /api/assessments` — save an assessment result
-  - `GET /api/assessments` — list all saved assessments (newest first)
+  - `POST /api/auth/signup` / `POST /api/auth/signin` / `GET /api/me` — student accounts (salted PBKDF2 password hashes) and bearer-token sessions
+  - `POST /api/assessments` — save an assessment result (auth required; linked to the signed-in student)
+  - `GET /api/assessments` — list the signed-in student's assessments (newest first)
   - `GET /api/health` — health check
+- **Frontend auth:** `index.html` shows a sign-in/sign-up overlay when no valid token is in localStorage (`dart_token`); the "Sign out" button in the topbar clears it. `showAuth()` resets the overlay to the sign-in box and clears the fields.
 - **Proxy:** nginx proxies `/api/` to the FastAPI service (single-origin, no CORS issues).
 - **Database:** SQLite at `backend/data/readiness.db` (stored in a Docker volume `api_data`).
 
